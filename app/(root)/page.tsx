@@ -3,6 +3,7 @@ import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
+import { api } from "@/lib/api";
 import handleError from "@/lib/handlers/error";
 import dbConnect from "@/lib/mongoose";
 import Link from "next/link";
@@ -39,8 +40,10 @@ const questions = [
 ];
 
 const test = async () => {
+  
+
   try {
-      await dbConnect();
+      return await api.users.getAll();
     } catch (error) {
     return handleError(error);
   }
@@ -52,7 +55,8 @@ interface SearchParams {
 
 const Home = async ({searchParams}: SearchParams) => {
 
-await test();
+const users = await test();
+console.log(users);
 
 
   const { query = "", filter = "" } = await searchParams;
