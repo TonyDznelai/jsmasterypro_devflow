@@ -1,7 +1,8 @@
+import React from "react";
 import NavLinks from "./navbar/NavLinks";
+import ROUTES from "@/constants/routes";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import ROUTES from "@/constants/routes";
 import Image from "next/image";
 
 const LeftSidebar = () => {
@@ -19,7 +20,7 @@ const LeftSidebar = () => {
           <Link href={ROUTES.SIGN_IN}>
             <Image
               src="/icons/account.svg"
-              alt="account"
+              alt="Account"
               width={20}
               height={20}
               className="invert-colors lg:hidden"
@@ -35,7 +36,7 @@ const LeftSidebar = () => {
           <Link href={ROUTES.SIGN_UP}>
             <Image
               src="/icons/sign-up.svg"
-              alt="account"
+              alt="Account"
               width={20}
               height={20}
               className="invert-colors lg:hidden"

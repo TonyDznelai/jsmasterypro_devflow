@@ -1,12 +1,11 @@
+import Link from "next/link";
+
+import { auth } from "@/auth";
 import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
-import { api } from "@/lib/api";
-import handleError from "@/lib/handlers/error";
-import dbConnect from "@/lib/mongoose";
-import Link from "next/link";
 
 const questions = [
   {
@@ -15,9 +14,14 @@ const questions = [
     description: "I want to learn React, can anyone help me?",
     tags: [
       { _id: "1", name: "React" },
-      { _id: "2", name: "React" },
+      { _id: "2", name: "JavaScript" },
     ],
-    author: { _id: "1", name: "John Doe", image: "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png"},
+    author: {
+      _id: "1",
+      name: "John Doe",
+      image:
+        "https://static.vecteezy.com/system/resources/previews/002/002/403/non_2x/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
+    },
     upvotes: 10,
     answers: 5,
     views: 100,
@@ -28,36 +32,30 @@ const questions = [
     title: "How to learn JavaScript?",
     description: "I want to learn JavaScript, can anyone help me?",
     tags: [
-      { _id: "1", name: "JavaScript", },
+      { _id: "1", name: "JavaScript" },
       { _id: "2", name: "JavaScript" },
     ],
-    author: { _id: "1", name: "John Doe", image: "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png"},
+    author: {
+      _id: "1",
+      name: "John Doe",
+      image:
+        "https://static.vecteezy.com/system/resources/previews/002/002/403/non_2x/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
+    },
     upvotes: 10,
     answers: 5,
     views: 100,
-    createdAt: new Date(),
+    createdAt: new Date("2021-09-01"),
   },
 ];
 
-const test = async () => {
-  
-
-  try {
-      return await api.users.getAll();
-    } catch (error) {
-    return handleError(error);
-  }
-};
-
 interface SearchParams {
-  searchParams: Promise<{[key: string]: string}>;
+  searchParams: Promise<{ [key: string]: string }>;
 }
 
-const Home = async ({searchParams}: SearchParams) => {
+const Home = async ({ searchParams }: SearchParams) => {
+  const session = await auth();
 
-const users = await test();
-console.log(users);
-
+  console.log("Session: ", session);
 
   const { query = "", filter = "" } = await searchParams;
 
@@ -70,10 +68,10 @@ console.log(users);
       : true;
     return matchesQuery && matchesFilter;
   });
-  
+
   return (
     <>
-      <section className="w-full flex flex-col-reverse sm:flex-row justify-between gap-4 sm:items-center">
+      <section className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
         <h1 className="h1-bold text-dark100_light900">All Questions</h1>
 
         <Button

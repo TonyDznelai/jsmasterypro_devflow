@@ -1,7 +1,7 @@
 "use client";
 
 import { SheetClose } from "@/components/ui/sheet";
-import { sidebarLinks } from "@/constants"
+import { sidebarLinks } from "@/constants";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,11 +19,10 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
           (pathname.includes(item.route) && item.route.length > 1) ||
           pathname === item.route;
 
-          if(item.route === "/profile"){
-              if(userId) item.route = `${item.route}/${userId}`;
-
-              else return null;
-            }  
+        if (item.route === "/profile") {
+          if (userId) item.route = `${item.route}/${userId}`;
+          else return null;
+        }
 
         const LinkComponent = (
           <Link
@@ -32,7 +31,7 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
             className={cn(
               isActive
                 ? "primary-gradient rounded-lg text-light-900"
-                : "text-dark300_light-900",
+                : "text-dark300_light900",
               "flex items-center justify-start gap-4 bg-transparent p-4"
             )}
           >
@@ -43,7 +42,6 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
               height={20}
               className={cn({ "invert-colors": !isActive })}
             />
-
             <p
               className={cn(
                 isActive ? "base-bold" : "base-medium",
@@ -56,10 +54,12 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
         );
 
         return isMobileNav ? (
-            <SheetClose asChild key={item.route}>
-              {LinkComponent}
-            </SheetClose>
-        ) : <React.Fragment key={item.route}>{LinkComponent}</React.Fragment>;
+          <SheetClose asChild key={item.route}>
+            {LinkComponent}
+          </SheetClose>
+        ) : (
+          <React.Fragment key={item.route}>{LinkComponent}</React.Fragment>
+        );
       })}
     </>
   );

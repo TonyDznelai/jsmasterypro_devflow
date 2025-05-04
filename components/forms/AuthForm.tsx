@@ -1,16 +1,17 @@
-"use client"
- 
-import { zodResolver } from "@hookform/resolvers/zod"
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import {
-  FieldValues,
-  useForm,
   DefaultValues,
-  SubmitHandler,
+  FieldValues,
   Path,
+  SubmitHandler,
+  useForm,
 } from "react-hook-form";
-import { z, ZodType } from "zod"
- 
-import { Button } from "@/components/ui/button"
+import { z, ZodType } from "zod";
+
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -18,32 +19,30 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import Link from "next/link";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import ROUTES from "@/constants/routes";
 
 interface AuthFormProps<T extends FieldValues> {
   schema: ZodType<T>;
   defaultValues: T;
-  onSubmit: (data: T) => Promise<{success: boolean}>;
+  onSubmit: (data: T) => Promise<{ success: boolean }>;
   formType: "SIGN_IN" | "SIGN_UP";
 }
 
-const AuthForm = <T extends FieldValues> ({
+const AuthForm = <T extends FieldValues>({
   schema,
   defaultValues,
   formType,
   onSubmit,
 }: AuthFormProps<T>) => {
-  // 1. Define your form.
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: defaultValues as DefaultValues<T>,
-  })
+  });
 
   const handleSubmit: SubmitHandler<T> = async () => {
-    // Authenticate user
+    // TODO: Authenticate User
   };
 
   const buttonText = formType === "SIGN_IN" ? "Sign In" : "Sign Up";
@@ -61,7 +60,7 @@ const AuthForm = <T extends FieldValues> ({
             name={field as Path<T>}
             render={({ field }) => (
               <FormItem className="flex w-full flex-col gap-2.5">
-                <FormLabel className="paragraph-medium text-dark400_light700 ">
+                <FormLabel className="paragraph-medium text-dark400_light700">
                   {field.name === "email"
                     ? "Email Address"
                     : field.name.charAt(0).toUpperCase() + field.name.slice(1)}
@@ -79,13 +78,14 @@ const AuthForm = <T extends FieldValues> ({
             )}
           />
         ))}
+
         <Button
           disabled={form.formState.isSubmitting}
           className="primary-gradient paragraph-medium min-h-12 w-full rounded-2 px-4 py-3 font-inter !text-light-900"
         >
           {form.formState.isSubmitting
             ? buttonText === "Sign In"
-              ? "Singing In..."
+              ? "Signin In..."
               : "Signing Up..."
             : buttonText}
         </Button>
@@ -114,6 +114,6 @@ const AuthForm = <T extends FieldValues> ({
       </form>
     </Form>
   );
-}
+};
 
 export default AuthForm;

@@ -6,11 +6,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "png.pngtree.com",
+        hostname: "static.vecteezy.com",
         port: "",
-      }
-    ]
-  }
+      },
+    ],
+  },
 };
 
 export default nextConfig;

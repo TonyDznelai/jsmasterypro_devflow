@@ -1,12 +1,14 @@
+import { NextResponse } from "next/server";
+
 import Account from "@/database/account.model";
 import handleError from "@/lib/handlers/error";
 import { NotFoundError, ValidationError } from "@/lib/http-errors";
 import dbConnect from "@/lib/mongoose";
-import { AccountSchema } from "@/lib/validation";
-import { NextResponse } from "next/server";
+import { AccountSchema } from "@/lib/validations";
 
+// GET /api/users/[id]
 export async function GET(
-  req: Request,
+  _: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
@@ -18,14 +20,15 @@ export async function GET(
     const account = await Account.findById(id);
     if (!account) throw new NotFoundError("Account");
 
-    return NextResponse.json({ success: true, account }, { status: 200 });
+    return NextResponse.json({ success: true, data: account }, { status: 200 });
   } catch (error) {
     return handleError(error, "api") as APIErrorResponse;
   }
 }
 
+// DELETE /api/users/[id]
 export async function DELETE(
-  req: Request,
+  _: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
@@ -37,14 +40,15 @@ export async function DELETE(
     const account = await Account.findByIdAndDelete(id);
     if (!account) throw new NotFoundError("Account");
 
-    return NextResponse.json({ success: true, data: account }, { status: 204 });
+    return NextResponse.json({ success: true, data: account }, { status: 200 });
   } catch (error) {
     return handleError(error, "api") as APIErrorResponse;
   }
 }
 
+// PUT /api/users/[id]
 export async function PUT(
-  req: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
@@ -53,10 +57,11 @@ export async function PUT(
   try {
     await dbConnect();
 
-    const body = await req.json();
+    const body = await request.json();
     const validatedData = AccountSchema.partial().safeParse(body);
 
-    if(!validatedData.success) throw new ValidationError(validatedData.error.flatten().fieldErrors);
+    if (!validatedData.success)
+      throw new ValidationError(validatedData.error.flatten().fieldErrors);
 
     const updatedAccount = await Account.findByIdAndUpdate(id, validatedData, {
       new: true,

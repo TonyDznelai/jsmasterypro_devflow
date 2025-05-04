@@ -1,52 +1,50 @@
-"use client"
+"use client";
 
-import { useState } from "react";
-import { Button } from "../ui/button";
-import { useRouter, useSearchParams } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { set } from "zod";
+import { useSearchParams, useRouter } from "next/navigation";
+import React, { useState } from "react";
+
 import { formUrlQuery, removeKeysFromUrlQuery } from "@/lib/url";
+import { cn } from "@/lib/utils";
+
+import { Button } from "../ui/button";
 
 const filters = [
   { name: "React", value: "react" },
   { name: "JavaScript", value: "javascript" },
 
-//   { name: "Newest", value: "newest" },
-//   { name: "Popular", value: "popular" },
-//   { name: "Unanswered", value: "unanswered" },
-//   { name: "Recommended", value: "recommended" },
+  // { name: "Newest", value: "newest" },
+  // { name: "Popular", value: "popular" },
+  // { name: "Unanswered", value: "unanswered" },
+  // { name: "Recommeded", value: "recommended" },
 ];
 
-
-
 const HomeFilter = () => {
-  const router = useRouter();  
+  const router = useRouter();
   const searchParams = useSearchParams();
   const filterParams = searchParams.get("filter");
   const [active, setActive] = useState(filterParams || "");
 
   const handleTypeClick = (filter: string) => {
-
     let newUrl = "";
 
     if (filter === active) {
-        setActive("");
-  
-         newUrl = removeKeysFromUrlQuery({
-          params: searchParams.toString(),
-          keysToRemove: ["filter"],
-        });
+      setActive("");
+
+      newUrl = removeKeysFromUrlQuery({
+        params: searchParams.toString(),
+        keysToRemove: ["filter"],
+      });
     } else {
-        setActive(filter);
-    
-         newUrl = formUrlQuery({
-          params: searchParams.toString(),
-          key: "filter",
-          value: filter.toLowerCase(),
-        });
+      setActive(filter);
+
+      newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: "filter",
+        value: filter.toLowerCase(),
+      });
     }
 
-    router.push(newUrl, { scroll: false }); 
+    router.push(newUrl, { scroll: false });
   };
 
   return (

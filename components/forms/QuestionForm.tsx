@@ -7,7 +7,7 @@ import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-
+import { AskQuestionSchema } from "@/lib/validations";
 
 import TagCard from "../cards/TagCard";
 import { Button } from "../ui/button";
@@ -21,7 +21,6 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { AskQuestionSchema } from "@/lib/validation";
 
 const Editor = dynamic(() => import("@/components/editor"), {
   ssr: false,

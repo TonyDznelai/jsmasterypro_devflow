@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const Collections = () => {
-  return (
-    <div>Collections</div>
-  )
-}
+  return <div>Collections</div>;
+};
 
-export default Collections
+export default Collections;
