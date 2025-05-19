@@ -12,7 +12,7 @@ import {
   EditQuestionSchema,
   GetQuestionSchema,
   PaginatedSearchParamsSchema,
-} from "../validation";
+} from "../validations";
 
 export async function createQuestion(
   params: CreateQuestionParams
