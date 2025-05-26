@@ -37,8 +37,11 @@ interface GetTagQuestionsParams extends Omit<PaginatedSearchParams, "filter"> {
 interface IncrementViewsParams {
   questionId: string;
 }
-
-interface CreateActionParams {
+interface CreateAnswerParams {
   questionId: string;
   content: string;
+}
+
+interface GetAnswerParams extends PaginatedSearchParams {
+  questionId: string;
 }
