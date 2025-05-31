@@ -111,12 +111,11 @@ const QuestionDetails = async ({params}: RouteParams) => {
           success={areAnswersLoaded}
           error={answersError}
           totalAnswers={answersResult?.totalAnswers || 0}
-          questionId={id}
         />
       </section>
 
       <section className='my-5'>
-        <AnswerForm questionId={question._id} />
+        <AnswerForm questionId={question._id} questionTitle={question.title} questionContent={question.content} />
       </section>
     </>
   )
