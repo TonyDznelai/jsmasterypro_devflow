@@ -2,61 +2,68 @@
 
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { use, useState } from "react";
 
 import { toast } from "@/hooks/use-toast";
 import { toggleSaveQuestion } from "@/lib/actions/collection.action";
 
-
-
-const SaveQuestion = ({questionId}: {questionId: string}) => {
-
+const SaveQuestion = ({
+  questionId,
+  hasSavedQuestionPromise,
+}: {
+  questionId: string;
+  hasSavedQuestionPromise: Promise<ActionResponse<{saved: boolean}>>;
+}) => {
   const session = useSession();
   const userId = session?.data?.user?.id;
-  
+
+  const {data} = use(hasSavedQuestionPromise);
+
+  const {saved: hasSaved} = data || {};
+
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSave = async () => {
-    if(isLoading) return;
-    if(!userId) return toast({
+    if (isLoading) return;
+    if (!userId)
+      return toast({
         title: "You need to be logged to save question",
-        variant: "destructive"
-   });
+        variant: "destructive",
+      });
 
-   setIsLoading(true);
+    setIsLoading(true);
 
-   try {
-    const {success, data, error} = await toggleSaveQuestion({questionId});
+    try {
+      const { success, data, error } = await toggleSaveQuestion({ questionId });
 
-    if(!success) throw new Error(error?.message || "An error occurred");
+      if (!success) throw new Error(error?.message || "An error occurred");
 
-    toast({
+      toast({
         title: `Question ${data?.saved ? "saved" : "unsaved"} successfully`,
-    });
-   } catch (error) {
-        toast({
-            title: "Error",
-            description: error instanceof Error ? error.message : "An error occurred",
-            variant: "destructive"
-        });
-   } finally {
-    setIsLoading(false);
-   }
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description:
+          error instanceof Error ? error.message : "An error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const hasSaved = false;
-
   return (
-    <Image 
-        src={hasSaved ? "/icons/star-filled.svg" : "/icons/star-red.svg"}
-        width={18}
-        height={18}
-        alt="save"
-        className={`cursor-pointer ${isLoading && "opacity-50"}`}
-        aria-label="Save question"
-        onClick={handleSave}
+    <Image
+      src={hasSaved ? "/icons/star-filled.svg" : "/icons/star-red.svg"}
+      width={18}
+      height={18}
+      alt="save"
+      className={`cursor-pointer ${isLoading && "opacity-50"}`}
+      aria-label="Save question"
+      onClick={handleSave}
     />
-  )
-}
+  );
+};
 
-export default SaveQuestion
+export default SaveQuestion;
