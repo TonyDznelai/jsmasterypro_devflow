@@ -97,7 +97,7 @@ const DataRenderer = <T,>({
             ? JSON.stringify(error.details, null, 2)
             : DEFAULT_ERROR.message
         }
-        button={empty.button}
+        button={DEFAULT_ERROR.button}
       />
     );
   }
