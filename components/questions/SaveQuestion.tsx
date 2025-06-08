@@ -12,14 +12,14 @@ const SaveQuestion = ({
   hasSavedQuestionPromise,
 }: {
   questionId: string;
-  hasSavedQuestionPromise: Promise<ActionResponse<{saved: boolean}>>;
+  hasSavedQuestionPromise: Promise<ActionResponse<{ saved: boolean }>>;
 }) => {
   const session = useSession();
   const userId = session?.data?.user?.id;
 
-  const {data} = use(hasSavedQuestionPromise);
+  const { data } = use(hasSavedQuestionPromise);
 
-  const {saved: hasSaved} = data || {};
+  const { saved: hasSaved } = data || {};
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,7 +27,7 @@ const SaveQuestion = ({
     if (isLoading) return;
     if (!userId)
       return toast({
-        title: "You need to be logged to save question",
+        title: "You need to be logged in to save a question",
         variant: "destructive",
       });
 
