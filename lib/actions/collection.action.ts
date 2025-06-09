@@ -89,7 +89,6 @@ export async function hasSavedQuestion(
     const collection = await Collection.findOne({
       question: questionId,
       author: userId,
-      authorize: true
     });
 
     return {
