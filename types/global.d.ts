@@ -81,3 +81,9 @@ interface User {
   createdAt: Date;
 }
 
+interface BadgeCounts {
+  GOLD: number;
+  SILVER: number;
+  BRONZE: number;
+}
+
