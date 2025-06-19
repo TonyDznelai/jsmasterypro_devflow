@@ -60,6 +60,7 @@ interface Answer {
   createdAt: Date;
   upvotes: number;
   downvotes: number;
+  question: string;
 }
 
 interface Collection {
@@ -80,7 +81,6 @@ interface User {
   reputation?: number;
   createdAt: Date;
 }
-
 interface BadgeCounts {
   GOLD: number;
   SILVER: number;
