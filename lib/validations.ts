@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { InteractionActionEnums } from "@/database/interaction.model";
+
 export const SignInSchema = z.object({
   email: z
     .string()
@@ -151,7 +153,9 @@ export const IncrementViewsSchema = z.object({
 });
 
 export const AnswerSchema = z.object({
-  content: z.string().min(100, { message: "Answer must to have more than 100 characters." }),
+  content: z
+    .string()
+    .min(100, { message: "Answer must to have more than 100 characters." }),
 });
 
 export const AnswerServerSchema = AnswerSchema.extend({
@@ -163,15 +167,24 @@ export const GetAnswersSchema = PaginatedSearchParamsSchema.extend({
 });
 
 export const AIAnswerSchema = z.object({
-  question: z.string().min(5, { message: "Question is required." }).max(130, { message: "Question cannot exceed 130 characters." }),
-  content: z.string().min(100, { message: "Answer has to be more than 100 characters." }),
+  question: z
+    .string()
+    .min(5, { message: "Question is required." })
+    .max(130, { message: "Question cannot exceed 130 characters." }),
+  content: z
+    .string()
+    .min(100, { message: "Answer has to be more than 100 characters." }),
   userAnswer: z.string().optional(),
 });
 
 export const CreateVoteSchema = z.object({
   targetId: z.string().min(1, { message: "Target ID is required." }),
-  targetType: z.enum(["question", "answer"], {message: "Target type must be either 'question' or 'answer'."}),
-  voteType: z.enum(["upvote", "downvote"], { message: "Vote type must be either 'upvote' or 'downvote'." }),
+  targetType: z.enum(["question", "answer"], {
+    message: "Target type must be either 'question' or 'answer'.",
+  }),
+  voteType: z.enum(["upvote", "downvote"], {
+    message: "Vote type must be either 'upvote' or 'downvote'.",
+  }),
 });
 
 export const UpdateVoteCountSchema = CreateVoteSchema.extend({
@@ -180,7 +193,7 @@ export const UpdateVoteCountSchema = CreateVoteSchema.extend({
 
 export const HasVotedSchema = CreateVoteSchema.pick({
   targetId: true,
-  targetType: true
+  targetType: true,
 });
 
 export const CollectionBaseSchema = z.object({
@@ -201,4 +214,19 @@ export const GetUserAnswersSchema = PaginatedSearchParamsSchema.extend({
 
 export const GetUserTagsSchema = z.object({
   userId: z.string().min(1, { message: "User ID is required." }),
+});
+
+export const DeleteQuestionSchema = z.object({
+  questionId: z.string().min(1, "Question ID is required"),
+});
+
+export const DeleteAnswerSchema = z.object({
+  answerId: z.string().min(1, "Answer ID is required"),
+});
+
+export const CreateInteractionSchema = z.object({
+  action: z.enum(InteractionActionEnums),
+  actionTarget: z.enum(["question", "answer"]),
+  actionId: z.string().min(1),
+  authorId: z.string().min(1),
 });
